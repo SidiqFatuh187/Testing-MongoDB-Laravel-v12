@@ -1,66 +1,253 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🍃 Testing MongoDB + Laravel v12
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Proyek ini adalah contoh implementasi **Laravel v12** yang terkoneksi dengan **MongoDB** sebagai database utama, menggunakan package resmi [`mongodb/laravel-mongodb`](https://github.com/mongodb/laravel-mongodb).
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📦 Tech Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Komponen | Versi |
+|---|---|
+| PHP | ^8.2 |
+| Laravel | ^12.0 |
+| mongodb/laravel-mongodb | ^5.7 |
+| MongoDB Server | 6.x / 7.x (disarankan) |
+| Composer | 2.x |
+| Node.js + NPM | (untuk assets) |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## ✅ Prasyarat — Wajib Diinstall Dulu
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Sebelum menjalankan project ini, pastikan semua tools berikut sudah terinstall di komputermu.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 1. 🐘 PHP 8.2+
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Download PHP sesuai OS kamu:
 
-## Laravel Sponsors
+- **Windows** → Download via [https://windows.php.net/download](https://windows.php.net/download) (pilih versi **8.2 Non Thread Safe x64**), atau lebih mudah pakai [XAMPP](https://www.apachefriends.org/) / [Laragon](https://laragon.org/)
+- **Linux/Mac** → Install via package manager:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+# Ubuntu/Debian
+sudo apt install php8.2 php8.2-cli php8.2-curl php8.2-mbstring php8.2-xml php8.2-zip
 
-### Premium Partners
+# Mac (Homebrew)
+brew install php@8.2
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+> ⚠️ Pastikan extension **MongoDB PHP Driver** (`ext-mongodb`) juga terinstall. Lihat langkah di bawah.
 
-## Contributing
+#### Install PHP MongoDB Extension
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+# Via PECL
+pecl install mongodb
 
-## Code of Conduct
+# Lalu tambahkan ke php.ini:
+extension=mongodb
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Cek apakah extension sudah aktif:
+```bash
+php -m | grep mongodb
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 2. 🎼 Composer 2.x
 
-## License
+Composer adalah package manager untuk PHP.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Download di: [https://getcomposer.org/download/](https://getcomposer.org/download/)
+- Untuk Windows, download **Composer-Setup.exe**
+- Untuk Linux/Mac:
+
+```bash
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+```
+
+Verifikasi instalasi:
+```bash
+composer --version
+# Composer version 2.x.x
+```
+
+---
+
+### 3. 🍃 MongoDB Server
+
+Download MongoDB Community Server di:  
+👉 [https://www.mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)
+
+Pilih versi **7.x (atau 6.x)** sesuai OS kamu, lalu ikuti wizard instalasinya.
+
+Pastikan MongoDB berjalan:
+```bash
+# Linux
+sudo systemctl start mongod
+sudo systemctl status mongod
+
+# Windows (jalankan sebagai service, atau lewat Services)
+net start MongoDB
+```
+
+Default MongoDB berjalan di:
+```
+Host: 127.0.0.1
+Port: 27017
+```
+
+---
+
+### 4. 🧭 MongoDB Compass (GUI — Opsional tapi Disarankan)
+
+MongoDB Compass adalah aplikasi GUI untuk melihat dan mengelola data MongoDB secara visual.
+
+- Download di: [https://www.mongodb.com/try/download/compass](https://www.mongodb.com/try/download/compass)
+- Setelah install, buka Compass dan koneksikan ke:
+
+```
+mongodb://localhost:27017
+```
+
+Dengan Compass, kamu bisa:
+- Lihat semua database & collection
+- Insert, update, delete dokumen
+- Jalankan query langsung
+- Lihat struktur dokumen secara visual
+
+---
+
+### 5. 📦 Node.js & NPM
+
+Dibutuhkan untuk compile assets (Vite).
+
+- Download di: [https://nodejs.org/](https://nodejs.org/) (pilih versi **LTS**)
+
+Verifikasi:
+```bash
+node -v
+npm -v
+```
+
+---
+
+## 🚀 Cara Menjalankan Project
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/SidiqFatuh187/Testing-MongoDB-Laravel-v12.git
+cd Testing-MongoDB-Laravel-v12
+```
+
+### 2. Install Dependencies PHP
+
+```bash
+composer install
+```
+
+### 3. Install Dependencies Node
+
+```bash
+npm install
+```
+
+### 4. Buat File `.env`
+
+```bash
+cp .env.example .env
+```
+
+### 5. Generate App Key
+
+```bash
+php artisan key:generate
+```
+
+### 6. Konfigurasi MongoDB di `.env`
+
+Buka file `.env`, lalu ubah konfigurasi database menjadi:
+
+```env
+DB_CONNECTION=mongodb
+DB_HOST=127.0.0.1
+DB_PORT=27017
+DB_DATABASE=nama_database_kamu
+DB_USERNAME=
+DB_PASSWORD=
+```
+
+> Jika MongoDB kamu tidak menggunakan autentikasi (default lokal), kosongkan saja `DB_USERNAME` dan `DB_PASSWORD`.
+
+### 7. Jalankan Migration (jika ada)
+
+```bash
+php artisan migrate
+```
+
+### 8. Jalankan Server
+
+```bash
+php artisan serve
+```
+
+Akses di browser: [http://localhost:8000](http://localhost:8000)
+
+### 9. (Opsional) Compile Assets
+
+```bash
+npm run dev
+```
+
+---
+
+## 🗄️ Melihat Data via MongoDB Compass
+
+Setelah aplikasi berjalan dan ada data masuk:
+
+1. Buka **MongoDB Compass**
+2. Klik **"New Connection"**
+3. Masukkan URI: `mongodb://localhost:27017`
+4. Klik **Connect**
+5. Pilih database sesuai `DB_DATABASE` di `.env`
+6. Klik collection yang ingin dilihat
+
+---
+
+## 🔧 Konfigurasi MongoDB di Laravel
+
+Package yang digunakan: [`mongodb/laravel-mongodb ^5.7`](https://github.com/mongodb/laravel-mongodb)
+
+Untuk menggunakan MongoDB di Model, extend dari class MongoDB:
+
+```php
+use MongoDB\Laravel\Eloquent\Model;
+
+class User extends Model
+{
+    protected $connection = 'mongodb';
+    protected $collection = 'users';
+}
+```
+
+---
+
+## ❓ Troubleshooting
+
+**Error: `Class "MongoDB\Driver\Manager" not found`**  
+→ PHP MongoDB extension belum terinstall. Jalankan `pecl install mongodb` dan aktifkan di `php.ini`.
+
+**Error: `Connection refused` ke MongoDB**  
+→ Pastikan service MongoDB sudah berjalan (`sudo systemctl start mongod`).
+
+**Error: `No application encryption key has been specified`**  
+→ Jalankan `php artisan key:generate`.
+
+---
+
+## 📄 Lisensi
+
+Project ini menggunakan lisensi [MIT](https://opensource.org/licenses/MIT).
