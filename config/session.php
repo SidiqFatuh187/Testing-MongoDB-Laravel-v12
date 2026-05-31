@@ -18,7 +18,9 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'database'),
+   'driver' => env('SESSION_DRIVER', 'mongodb'), // pastikan mongodb
+    'table' => 'sessions', // nama collection
+    'connection' => 'mongodb', // nama koneksi di database.php
 
     /*
     |--------------------------------------------------------------------------
