@@ -3,242 +3,540 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login — Stockify</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        * { font-family: 'DM Sans', sans-serif; }
-        h1, h2, h3, .font-display { font-family: 'Syne', sans-serif; }
-
-        .bg-mesh {
-            background-color: #0a0a0f;
-            background-image:
-                radial-gradient(ellipse 80% 60% at 20% 10%, rgba(99, 58, 232, 0.25) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 50% at 80% 80%, rgba(20, 184, 166, 0.15) 0%, transparent 55%),
-                radial-gradient(ellipse 40% 40% at 60% 30%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+        body {
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            background: #ffffff;
         }
 
-        .card-glass {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-        }
-
-        .input-field {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #f1f5f9;
-            transition: all 0.2s ease;
-        }
-
-        .input-field:focus {
-            outline: none;
-            border-color: rgba(99, 58, 232, 0.7);
-            background: rgba(99, 58, 232, 0.08);
-            box-shadow: 0 0 0 3px rgba(99, 58, 232, 0.15);
-        }
-
-        .input-field::placeholder { color: rgba(148, 163, 184, 0.5); }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #6d28d9, #4f46e5);
-            transition: all 0.25s ease;
+        /* ── LEFT PANEL ── */
+        .panel-left {
+            flex: 0 0 55%;
+            background: linear-gradient(145deg, #7c3aed 0%, #6d28d9 40%, #5b21b6 100%);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 3.5rem;
         }
 
-        .btn-primary::before {
+        /* decorative circles */
+        .panel-left::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, #7c3aed, #6366f1);
-            opacity: 0;
-            transition: opacity 0.25s ease;
-        }
-
-        .btn-primary:hover::before { opacity: 1; }
-        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 25px rgba(99, 58, 232, 0.4); }
-        .btn-primary:active { transform: translateY(0); }
-
-        .noise {
-            position: fixed;
-            inset: 0;
-            opacity: 0.03;
+            top: -80px; right: -80px;
+            width: 340px; height: 340px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
             pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+        .panel-left::after {
+            content: '';
+            position: absolute;
+            bottom: -100px; left: -60px;
+            width: 400px; height: 400px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            pointer-events: none;
         }
 
-        .float-label { animation: float 6s ease-in-out infinite; }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+        /* floating card shapes in bg */
+        .deco-card {
+            position: absolute;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            backdrop-filter: blur(4px);
+        }
+        .deco-card-1 { width: 110px; height: 70px; top: 14%; left: 6%; transform: rotate(-8deg); }
+        .deco-card-2 { width: 80px; height: 50px; top: 22%; left: 20%; transform: rotate(4deg); }
+        .deco-card-3 { width: 90px; height: 56px; bottom: 28%; right: 8%; transform: rotate(6deg); }
+        .deco-card-4 { width: 60px; height: 60px; top: 55%; left: 5%; border-radius: 50%; }
+
+        /* brand logo in left panel */
+        .brand-mark {
+            position: absolute;
+            top: 2rem; left: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+        .brand-mark-icon {
+            width: 36px; height: 36px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .brand-mark span {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            letter-spacing: -0.02em;
         }
 
-        .fade-up {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeUp 0.6s ease forwards;
-        }
-        @keyframes fadeUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-up:nth-child(1) { animation-delay: 0.1s; }
-        .fade-up:nth-child(2) { animation-delay: 0.2s; }
-        .fade-up:nth-child(3) { animation-delay: 0.3s; }
-        .fade-up:nth-child(4) { animation-delay: 0.4s; }
-        .fade-up:nth-child(5) { animation-delay: 0.5s; }
-        .fade-up:nth-child(6) { animation-delay: 0.6s; }
-
-        .divider-line {
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+        /* illustration area */
+        .illustration-wrap {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        label { color: rgba(203, 213, 225, 0.8); }
+        .illustration-wrap svg {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 24px 48px rgba(0,0,0,0.25));
+        }
 
-        @media (prefers-color-scheme: light) {
-            .bg-mesh { background-color: #f8f7ff; }
+        /* left panel caption */
+        .panel-caption {
+            position: relative;
+            z-index: 5;
+            margin-top: 2.5rem;
+            text-align: center;
+            max-width: 380px;
+        }
+        .panel-caption h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.3;
+        }
+        .panel-caption p {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.6;
+        }
+
+        /* ── RIGHT PANEL ── */
+        .panel-right {
+            flex: 0 0 45%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 3rem;
+            background: #ffffff;
+        }
+
+        .form-wrap {
+            width: 100%;
+            max-width: 360px;
+        }
+
+        .form-heading {
+            margin-bottom: 2rem;
+        }
+        .form-heading h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #1e1b4b;
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+        }
+        .form-heading h1 span {
+            display: block;
+            color: #7c3aed;
+        }
+        .form-heading p {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+
+        /* fields */
+        .field-group { display: flex; flex-direction: column; gap: 1.1rem; }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .field label {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: #64748b;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-family: 'DM Sans', sans-serif;
+            color: #1e293b;
+            background: #f8fafc;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            outline: none;
+        }
+        .field input::placeholder { color: #b0bec5; }
+        .field input:focus {
+            border-color: #7c3aed;
+            background: #faf7ff;
+            box-shadow: 0 0 0 3.5px rgba(124, 58, 237, 0.1);
+        }
+
+        .field-error {
+            font-size: 0.75rem;
+            color: #ef4444;
+            margin-top: 0.15rem;
+        }
+
+        /* row: remember + forgot */
+        .row-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.25rem;
+        }
+        .remember-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: #64748b;
+            user-select: none;
+        }
+        .remember-label input[type="checkbox"] {
+            width: 16px; height: 16px;
+            accent-color: #7c3aed;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .forgot-link {
+            font-size: 0.875rem;
+            color: #7c3aed;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .forgot-link:hover { color: #6d28d9; }
+
+        /* session error alert */
+        .alert-error {
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border: 1.5px solid #fecaca;
+            background: #fff5f5;
+            color: #dc2626;
+            font-size: 0.85rem;
+            margin-bottom: 1.25rem;
+        }
+
+        /* submit button */
+        .btn-login {
+            margin-top: 1.5rem;
+            width: 100%;
+            padding: 0.85rem;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            letter-spacing: 0.01em;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 6px 20px rgba(109, 40, 217, 0.35);
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(109, 40, 217, 0.45);
+        }
+        .btn-login:active { transform: translateY(0); }
+
+        /* register prompt */
+        .register-prompt {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+        .register-prompt a {
+            color: #7c3aed;
+            font-weight: 600;
+            text-decoration: none;
+            margin-left: 0.25rem;
+            transition: color 0.2s;
+        }
+        .register-prompt a:hover { color: #6d28d9; }
+
+        /* app store badges */
+        .store-badges {
+            display: flex;
+            gap: 0.65rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.45rem 0.9rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            background: #0f0f0f;
+            color: #fff;
+            text-decoration: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .badge:hover { border-color: #7c3aed; box-shadow: 0 0 0 2px rgba(124,58,237,0.15); }
+        .badge-text { display: flex; flex-direction: column; }
+        .badge-text small { font-size: 0.6rem; color: #cbd5e1; line-height: 1; }
+        .badge-text strong { font-size: 0.75rem; color: #fff; line-height: 1.4; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 860px) {
+            body { flex-direction: column; }
+            .panel-left {
+                flex: none;
+                padding: 2.5rem 2rem 2rem;
+                min-height: 240px;
+            }
+            .illustration-wrap { max-width: 280px; }
+            .panel-caption { display: none; }
+            .panel-right {
+                flex: none;
+                padding: 2rem 1.5rem 3rem;
+            }
+            .brand-mark { top: 1.25rem; left: 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .panel-left { min-height: 200px; padding: 2rem 1.25rem 1.5rem; }
+            .form-heading h1 { font-size: 1.75rem; }
+            .store-badges { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
-<body class="bg-mesh min-h-screen flex items-center justify-center p-4">
+<body>
 
-    <div class="noise"></div>
-
-    <!-- Decorative orb -->
-    <div class="fixed top-[-10%] right-[-5%] w-96 h-96 rounded-full opacity-20 blur-3xl pointer-events-none"
-         style="background: radial-gradient(circle, #6d28d9, transparent)"></div>
-    <div class="fixed bottom-[-10%] left-[-5%] w-80 h-80 rounded-full opacity-15 blur-3xl pointer-events-none"
-         style="background: radial-gradient(circle, #0d9488, transparent)"></div>
-
-    <div class="w-full max-w-md">
-
-        <!-- Logo / Brand -->
-        <div class="text-center mb-8 fade-up">
-            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 float-label"
-                 style="background: linear-gradient(135deg, #6d28d9, #4f46e5); box-shadow: 0 8px 32px rgba(99, 58, 232, 0.4);">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A8.966 8.966 0 0112 15c2.485 0 4.735.948 6.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    <!-- ══════════════ LEFT PANEL ══════════════ -->
+    <div class="panel-left">
+        <!-- Brand -->
+        <div class="brand-mark">
+            <div class="brand-mark-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                     xmlns="http://www.w3.org/2000/svg" stroke="white" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
                 </svg>
             </div>
-            <h1 class="font-display text-2xl font-700 text-white tracking-tight">Selamat Datang</h1>
-            <p class="text-sm mt-1" style="color: rgba(148, 163, 184, 0.7);">Masuk ke akun kamu</p>
+            <span>Stockify</span>
         </div>
 
-        <!-- Card -->
-        <div class="card-glass rounded-3xl p-8 fade-up">
+        <!-- Decorative floating cards -->
+        <div class="deco-card deco-card-1"></div>
+        <div class="deco-card deco-card-2"></div>
+        <div class="deco-card deco-card-3"></div>
+        <div class="deco-card deco-card-4"></div>
+
+        <!-- SVG Illustration (isometric-style, inline for zero HTTP request) -->
+        <div class="illustration-wrap">
+            <svg viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="screen-grad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#ede9fe"/>
+                        <stop offset="100%" stop-color="#c4b5fd"/>
+                    </linearGradient>
+                    <linearGradient id="panel-grad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="rgba(255,255,255,0.18)"/>
+                        <stop offset="100%" stop-color="rgba(255,255,255,0.06)"/>
+                    </linearGradient>
+                    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="rgba(0,0,0,0.22)"/>
+                    </filter>
+                </defs>
+
+                <!-- Main phone / screen card -->
+                <rect x="160" y="60" width="200" height="270" rx="24" fill="url(#screen-grad)" filter="url(#shadow)"/>
+                <rect x="174" y="80" width="172" height="230" rx="14" fill="white" opacity="0.95"/>
+
+                <!-- Screen top bar -->
+                <rect x="174" y="80" width="172" height="40" rx="14" fill="#7c3aed"/>
+                <circle cx="260" cy="100" r="10" fill="rgba(255,255,255,0.2)"/>
+                <path d="M255 100 l3-4 l4 7 l3-3 l2 4" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                <!-- Chart bars in screen -->
+                <rect x="190" y="175" width="16" height="50" rx="4" fill="#ddd6fe"/>
+                <rect x="212" y="155" width="16" height="70" rx="4" fill="#7c3aed"/>
+                <rect x="234" y="165" width="16" height="60" rx="4" fill="#a78bfa"/>
+                <rect x="256" y="145" width="16" height="80" rx="4" fill="#7c3aed"/>
+                <rect x="278" y="170" width="16" height="55" rx="4" fill="#ddd6fe"/>
+                <rect x="300" y="158" width="16" height="67" rx="4" fill="#a78bfa"/>
+
+                <!-- Check mark circle -->
+                <circle cx="260" cy="150" r="14" fill="#7c3aed" opacity="0.15"/>
+                <circle cx="260" cy="150" r="10" fill="#7c3aed"/>
+                <path d="M255 150 l3 3 l6-6" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                <!-- Floating UI cards (left) -->
+                <g transform="translate(50, 110)" filter="url(#shadow)">
+                    <rect width="100" height="62" rx="12" fill="url(#panel-grad)" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+                    <circle cx="18" cy="20" r="9" fill="rgba(255,255,255,0.2)"/>
+                    <text x="32" y="16" font-family="'DM Sans',sans-serif" font-size="8" fill="rgba(255,255,255,0.85)" font-weight="600">Revenue</text>
+                    <text x="32" y="27" font-family="'DM Sans',sans-serif" font-size="7" fill="rgba(255,255,255,0.55)">This month</text>
+                    <text x="12" y="50" font-family="'Syne',sans-serif" font-size="14" fill="white" font-weight="700">$24,830</text>
+                </g>
+
+                <!-- Floating card top-right -->
+                <g transform="translate(368, 80)" filter="url(#shadow)">
+                    <rect width="90" height="56" rx="12" fill="url(#panel-grad)" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+                    <text x="10" y="18" font-family="'DM Sans',sans-serif" font-size="7.5" fill="rgba(255,255,255,0.8)" font-weight="500">Stock Items</text>
+                    <text x="10" y="40" font-family="'Syne',sans-serif" font-size="18" fill="white" font-weight="700">1,249</text>
+                </g>
+
+                <!-- Floating card bottom-right -->
+                <g transform="translate(378, 230)" filter="url(#shadow)">
+                    <rect width="96" height="56" rx="12" fill="url(#panel-grad)" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+                    <text x="10" y="18" font-family="'DM Sans',sans-serif" font-size="7.5" fill="rgba(255,255,255,0.8)" font-weight="500">Low Stock</text>
+                    <text x="10" y="38" font-family="'Syne',sans-serif" font-size="17" fill="#fbbf24" font-weight="700">⚠ 14</text>
+                </g>
+
+                <!-- person silhouette left -->
+                <g transform="translate(78, 178)">
+                    <!-- body -->
+                    <ellipse cx="34" cy="85" rx="22" ry="10" fill="rgba(255,255,255,0.08)"/>
+                    <rect x="18" y="42" width="32" height="40" rx="10" fill="#a78bfa"/>
+                    <rect x="22" y="82" width="10" height="22" rx="5" fill="#8b5cf6"/>
+                    <rect x="34" y="82" width="10" height="22" rx="5" fill="#8b5cf6"/>
+                    <!-- head -->
+                    <circle cx="34" cy="28" r="16" fill="#fde68a"/>
+                    <!-- hair -->
+                    <ellipse cx="34" cy="14" rx="16" ry="8" fill="#92400e"/>
+                    <!-- pointing arm -->
+                    <line x1="50" y1="58" x2="80" y2="50" stroke="#a78bfa" stroke-width="7" stroke-linecap="round"/>
+                    <circle cx="80" cy="50" r="6" fill="#fde68a"/>
+                    <!-- badge -->
+                    <rect x="20" y="50" width="18" height="10" rx="3" fill="rgba(255,255,255,0.3)"/>
+                    <line x1="26" y1="60" x2="26" y2="70" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                </g>
+
+                <!-- person silhouette right -->
+                <g transform="translate(350, 175)">
+                    <ellipse cx="34" cy="90" rx="22" ry="10" fill="rgba(255,255,255,0.08)"/>
+                    <rect x="18" y="45" width="32" height="42" rx="10" fill="#60a5fa"/>
+                    <rect x="22" y="85" width="10" height="24" rx="5" fill="#3b82f6"/>
+                    <rect x="34" y="85" width="10" height="24" rx="5" fill="#3b82f6"/>
+                    <circle cx="34" cy="30" r="16" fill="#fed7aa"/>
+                    <ellipse cx="34" cy="17" rx="16" ry="8" fill="#1e293b"/>
+                    <!-- arm reaching left -->
+                    <line x1="18" y1="60" x2="-14" y2="52" stroke="#60a5fa" stroke-width="7" stroke-linecap="round"/>
+                    <circle cx="-14" cy="52" r="6" fill="#fed7aa"/>
+                </g>
+
+                <!-- ground shadow -->
+                <ellipse cx="260" cy="345" rx="120" ry="14" fill="rgba(0,0,0,0.12)"/>
+            </svg>
+        </div>
+
+        <!-- Caption -->
+        <div class="panel-caption">
+            <h2>Kelola stok bisnis kamu dengan mudah</h2>
+            <p>Pantau inventaris, analisis penjualan, dan buat keputusan lebih cepat bersama Stockify.</p>
+        </div>
+    </div>
+
+    <!-- ══════════════ RIGHT PANEL ══════════════ -->
+    <div class="panel-right">
+        <div class="form-wrap">
+
+            <div class="form-heading">
+                <h1>Hello,<span>Welcome back!</span></h1>
+                <p>Masuk untuk melanjutkan ke akun Stockify kamu.</p>
+            </div>
 
             <!-- Session Error -->
             @if (session('error'))
-                <div class="mb-5 px-4 py-3 rounded-xl text-sm fade-up"
-                     style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #fca5a5;">
-                    {{ session('error') }}
-                </div>
+                <div class="alert-error">{{ session('error') }}</div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}" class="space-y-5">
+            <form method="POST" action="{{ route('login') }}">
                 @csrf
 
-                <!-- Email -->
-                <div class="fade-up">
-                    <label class="block text-xs font-500 mb-2 tracking-wide uppercase" for="email">
-                        Email
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value="{{ old('email') }}"
-                        placeholder="kamu@email.com"
-                        required
-                        autofocus
-                        class="input-field w-full px-4 py-3 rounded-xl text-sm"
-                    >
-                    @error('email')
-                        <p class="mt-1.5 text-xs" style="color: #f87171;">{{ $message }}</p>
-                    @enderror
-                </div>
+                <div class="field-group">
 
-                <!-- Password -->
-                <div class="fade-up">
-                    <div class="flex items-center justify-between mb-2">
-                        <label class="text-xs font-500 tracking-wide uppercase" for="password">
-                            Password
-                        </label>
-                        @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}"
-                               class="text-xs transition-colors"
-                               style="color: rgba(139, 92, 246, 0.8);"
-                               onmouseover="this.style.color='rgba(167, 139, 250, 1)'"
-                               onmouseout="this.style.color='rgba(139, 92, 246, 0.8)'">
-                                Lupa password?
-                            </a>
-                        @endif
+                    <!-- Email / Username field -->
+                    <div class="field">
+                        <label for="email">Username or email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value="{{ old('email') }}"
+                            placeholder="kamu@email.com"
+                            required
+                            autofocus
+                        >
+                        @error('email')
+                            <span class="field-error">{{ $message }}</span>
+                        @enderror
                     </div>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="••••••••"
-                        required
-                        class="input-field w-full px-4 py-3 rounded-xl text-sm"
-                    >
-                    @error('password')
-                        <p class="mt-1.5 text-xs" style="color: #f87171;">{{ $message }}</p>
-                    @enderror
+
+                    <!-- Password -->
+                    <div class="field">
+                        <label for="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="••••••••"
+                            required
+                        >
+                        @error('password')
+                            <span class="field-error">{{ $message }}</span>
+                        @enderror
+                    </div>
+
                 </div>
 
-                <!-- Remember Me -->
-                <div class="fade-up flex items-center gap-3">
-                    <input
-                        type="checkbox"
-                        id="remember"
-                        name="remember"
-                        class="w-4 h-4 rounded accent-violet-600 cursor-pointer"
-                    >
-                    <label for="remember" class="text-sm cursor-pointer" style="color: rgba(148, 163, 184, 0.8);">
-                        Ingat saya
+                <!-- Remember me + Forgot password -->
+                <div class="row-options" style="margin-top: 1rem;">
+                    <label class="remember-label">
+                        <input type="checkbox" id="remember" name="remember">
+                        Remember me
                     </label>
+                    @if (Route::has('password.request'))
+                        <a href="{{ route('password.request') }}" class="forgot-link">Forgot password?</a>
+                    @endif
                 </div>
 
-                <!-- Submit -->
-                <div class="fade-up pt-1">
-                    <button type="submit" class="btn-primary w-full py-3 rounded-xl text-sm font-600 text-white tracking-wide relative z-10">
-                        Masuk
-                    </button>
-                </div>
+                <!-- Login button -->
+                <button type="submit" class="btn-login">Login</button>
 
             </form>
 
-            <!-- Divider -->
+            <!-- Register -->
             @if (Route::has('register'))
-                <div class="flex items-center gap-3 my-6 fade-up">
-                    <div class="divider-line"></div>
-                    <span class="text-xs" style="color: rgba(100, 116, 139, 0.7);">atau</span>
-                    <div class="divider-line"></div>
-                </div>
-
-                <!-- Register Link -->
-                <div class="text-center fade-up">
-                    <p class="text-sm" style="color: rgba(148, 163, 184, 0.6);">
-                        Belum punya akun?
-                        <a href="{{ route('register') }}"
-                           class="font-500 transition-colors ml-1"
-                           style="color: rgba(139, 92, 246, 0.9);"
-                           onmouseover="this.style.color='rgba(167, 139, 250, 1)'"
-                           onmouseout="this.style.color='rgba(139, 92, 246, 0.9)'">
-                            Daftar sekarang
-                        </a>
-                    </p>
-                </div>
+                <p class="register-prompt">
+                    Don't have an account?
+                    <a href="{{ route('register') }}">Click here</a>
+                </p>
             @endif
 
         </div>
-
     </div>
+
 </body>
 </html>

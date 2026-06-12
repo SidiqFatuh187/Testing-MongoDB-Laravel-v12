@@ -3,43 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Produk</title>
+    <title>Edit Produk — Stockify</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
-
-        * { font-family: 'DM Sans', sans-serif; box-sizing: border-box; }
-        h1, h2, h3, .font-display { font-family: 'Syne', sans-serif; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: #0a0a0f;
-            background-image:
-                radial-gradient(ellipse 70% 50% at 10% 0%, rgba(99, 58, 232, 0.2) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 40% at 90% 90%, rgba(20, 184, 166, 0.12) 0%, transparent 55%);
+            font-family: 'DM Sans', sans-serif;
+            background: #f8f7ff;
             min-height: 100vh;
-            color: #f1f5f9;
+            color: #1e1b4b;
+            display: flex;
         }
 
-        .noise {
-            position: fixed;
-            inset: 0;
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-        }
-
+        /* ─── SIDEBAR ─── */
         .sidebar {
-            width: 240px;
+            width: 252px;
             min-height: 100vh;
-            background: rgba(255, 255, 255, 0.03);
-            border-right: 1px solid rgba(255, 255, 255, 0.07);
+            background: #ffffff;
+            border-right: 1px solid #ede9fe;
             position: fixed;
             top: 0; left: 0;
             display: flex;
             flex-direction: column;
             padding: 1.5rem 1rem;
-            z-index: 10;
+            z-index: 20;
+            box-shadow: 4px 0 24px rgba(124, 58, 237, 0.05);
         }
 
         .sidebar-logo {
@@ -47,16 +37,36 @@
             align-items: center;
             gap: 10px;
             padding: 0.5rem 0.75rem;
-            margin-bottom: 2rem;
+            margin-bottom: 2.25rem;
         }
 
         .logo-icon {
             width: 36px; height: 36px;
             border-radius: 10px;
-            background: linear-gradient(135deg, #6d28d9, #4f46e5);
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 16px rgba(99, 58, 232, 0.4);
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
             flex-shrink: 0;
+        }
+
+        .logo-icon svg { width: 18px; height: 18px; }
+
+        .logo-label {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1e1b4b;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-section-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #c4b5fd;
+            padding: 0 0.75rem;
+            margin: 1rem 0 0.4rem;
+            font-weight: 600;
         }
 
         .nav-item {
@@ -66,23 +76,27 @@
             padding: 0.65rem 0.75rem;
             border-radius: 12px;
             font-size: 0.875rem;
-            color: rgba(148, 163, 184, 0.7);
+            font-weight: 500;
+            color: #94a3b8;
             text-decoration: none;
             transition: all 0.2s ease;
             margin-bottom: 2px;
         }
 
-        .nav-item:hover { background: rgba(255,255,255,0.06); color: #f1f5f9; }
-        .nav-item.active { background: rgba(99,58,232,0.15); color: #a78bfa; border: 1px solid rgba(99,58,232,0.2); }
         .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+        .nav-item:hover { background: #f5f3ff; color: #7c3aed; }
 
-        .nav-section-label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: rgba(100, 116, 139, 0.5);
-            padding: 0 0.75rem;
-            margin: 1rem 0 0.5rem;
+        .nav-item.active {
+            background: linear-gradient(135deg, #ede9fe, #f5f3ff);
+            color: #7c3aed;
+            border: 1px solid #ddd6fe;
+            font-weight: 600;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid #f1f5f9;
         }
 
         .logout-btn {
@@ -92,102 +106,180 @@
             padding: 0.65rem 0.75rem;
             border-radius: 12px;
             font-size: 0.875rem;
-            color: rgba(248, 113, 113, 0.7);
-            text-decoration: none;
+            font-weight: 500;
+            color: #f87171;
             transition: all 0.2s ease;
             width: 100%;
             background: none;
             border: none;
             cursor: pointer;
-            margin-top: auto;
+            font-family: 'DM Sans', sans-serif;
         }
 
-        .logout-btn:hover { background: rgba(239,68,68,0.08); color: #fca5a5; }
-        .logout-btn svg { width: 18px; height: 18px; }
+        .logout-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+        .logout-btn:hover { background: #fff5f5; color: #ef4444; }
 
+        /* ─── MAIN ─── */
         .main {
-            margin-left: 240px;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
+            margin-left: 252px;
+            flex: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
+        /* ─── TOPBAR ─── */
         .topbar {
+            padding: 1.75rem 2.5rem 1.5rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 2rem;
+            border-bottom: 1px solid #ede9fe;
+            background: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .topbar-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
         .breadcrumb {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 0.8rem;
-            color: rgba(100,116,139,0.6);
-            margin-bottom: 0.35rem;
+            font-size: 0.75rem;
+            color: #94a3b8;
+            font-weight: 500;
         }
+
         .breadcrumb a {
-            color: rgba(167,139,250,0.7);
+            color: #a78bfa;
             text-decoration: none;
             transition: color 0.15s;
         }
-        .breadcrumb a:hover { color: #a78bfa; }
-        .breadcrumb svg { width: 12px; height: 12px; }
 
-        /* Badge ID produk */
-        .product-id-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 0.25rem 0.75rem;
-            border-radius: 99px;
-            font-size: 0.72rem;
-            font-weight: 500;
-            background: rgba(20,184,166,0.1);
-            color: #5eead4;
-            border: 1px solid rgba(20,184,166,0.2);
+        .breadcrumb a:hover { color: #7c3aed; }
+        .breadcrumb svg { width: 11px; height: 11px; color: #c4b5fd; }
+
+        .topbar-left h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #1e1b4b;
+            letter-spacing: -0.03em;
         }
 
-        .form-card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 20px;
-            overflow: hidden;
-            max-width: 640px;
-        }
-
-        .form-header {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .form-header-left {
+        .topbar-actions {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .form-header-icon {
-            width: 34px; height: 34px;
-            border-radius: 10px;
-            background: rgba(20,184,166,0.1);
-            border: 1px solid rgba(20,184,166,0.2);
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
+        .btn-cancel {
+            padding: 0.6rem 1.2rem;
+            border-radius: 11px;
+            font-size: 0.825rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid #e2e8f0;
+            background: #ffffff;
+            color: #64748b;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'DM Sans', sans-serif;
         }
 
-        .form-body {
-            padding: 1.75rem 1.5rem;
+        .btn-cancel:hover { background: #f8f7ff; border-color: #c4b5fd; color: #7c3aed; }
+        .btn-cancel svg { width: 14px; height: 14px; }
+
+        .btn-danger {
+            padding: 0.6rem 1.2rem;
+            border-radius: 11px;
+            font-size: 0.825rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid #fecaca;
+            background: #fff5f5;
+            color: #ef4444;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-danger:hover { background: #fee2e2; border-color: #fca5a5; color: #dc2626; }
+        .btn-danger svg { width: 14px; height: 14px; }
+
+        .btn-primary {
+            padding: 0.6rem 1.4rem;
+            border-radius: 11px;
+            font-size: 0.825rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: white;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'DM Sans', sans-serif;
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4); }
+        .btn-primary:active { transform: translateY(0); }
+        .btn-primary svg { width: 14px; height: 14px; }
+
+        /* ─── CONTENT AREA ─── */
+        .content-area {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 0;
+        }
+
+        /* ─── FORM PANEL (left) ─── */
+        .form-panel {
+            padding: 2rem 2.5rem;
+            border-right: 1px solid #ede9fe;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #c4b5fd;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.25rem;
             display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
+            align-items: center;
+            gap: 8px;
         }
 
-        .form-row {
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #ede9fe;
+        }
+
+        /* ─── FORM FIELDS ─── */
+        .form-block {
+            margin-bottom: 2rem;
+        }
+
+        .form-grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.25rem;
@@ -201,36 +293,43 @@
 
         .form-label {
             font-size: 0.78rem;
-            font-weight: 500;
-            color: rgba(148,163,184,0.8);
+            font-weight: 600;
+            color: #475569;
             letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
-        .form-label span {
-            color: rgba(248,113,113,0.7);
-            margin-left: 2px;
-        }
+        .form-label .req { color: #f87171; }
 
         .form-input {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #f1f5f9;
-            padding: 0.65rem 1rem;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            color: #1e1b4b;
+            padding: 0.7rem 1rem;
             border-radius: 12px;
             font-size: 0.875rem;
             outline: none;
             transition: all 0.2s ease;
             width: 100%;
+            font-family: 'DM Sans', sans-serif;
         }
 
         .form-input:focus {
-            border-color: rgba(20,184,166,0.45);
-            background: rgba(20,184,166,0.06);
-            box-shadow: 0 0 0 3px rgba(20,184,166,0.07);
+            border-color: #c4b5fd;
+            background: #faf7ff;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.07);
         }
 
-        .form-input::placeholder { color: rgba(100,116,139,0.45); }
+        .form-input::placeholder { color: #d1c7fb; }
 
+        .form-input.is-error {
+            border-color: #fca5a5;
+            background: #fff5f5;
+        }
+
+        /* Input with prefix/suffix */
         .input-wrapper {
             position: relative;
             display: flex;
@@ -241,170 +340,473 @@
             position: absolute;
             left: 1rem;
             font-size: 0.8rem;
-            color: rgba(100,116,139,0.6);
+            color: #94a3b8;
             pointer-events: none;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .input-suffix {
             position: absolute;
             right: 1rem;
             font-size: 0.8rem;
-            color: rgba(100,116,139,0.6);
+            color: #94a3b8;
             pointer-events: none;
+            font-weight: 500;
         }
 
         .form-input.has-prefix { padding-left: 2.75rem; }
         .form-input.has-suffix { padding-right: 3rem; }
 
+        /* Textarea */
+        .form-textarea {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            color: #1e1b4b;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            outline: none;
+            transition: all 0.2s ease;
+            width: 100%;
+            font-family: 'DM Sans', sans-serif;
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .form-textarea:focus {
+            border-color: #c4b5fd;
+            background: #faf7ff;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.07);
+        }
+
+        .form-textarea::placeholder { color: #d1c7fb; }
+
+        /* Error */
         .form-error {
             font-size: 0.72rem;
-            color: #fca5a5;
-            margin-top: 2px;
+            color: #ef4444;
             display: flex;
             align-items: center;
             gap: 4px;
+            font-weight: 500;
         }
 
         .form-error svg { width: 12px; height: 12px; flex-shrink: 0; }
 
-        .form-input.is-error {
-            border-color: rgba(239,68,68,0.4);
-            background: rgba(239,68,68,0.05);
+        /* Hint text */
+        .form-hint {
+            font-size: 0.72rem;
+            color: #94a3b8;
         }
 
-        .form-divider {
-            height: 1px;
-            background: rgba(255,255,255,0.06);
-            margin: 0.25rem 0;
-        }
-
-        .form-footer {
-            padding: 1.25rem 1.5rem;
-            border-top: 1px solid rgba(255,255,255,0.07);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .btn-cancel {
-            padding: 0.6rem 1.25rem;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.05);
-            color: rgba(148,163,184,0.8);
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-cancel:hover { background: rgba(255,255,255,0.09); color: #f1f5f9; }
-
-        .btn-primary {
-            padding: 0.6rem 1.4rem;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            border: none;
-            background: linear-gradient(135deg, #0d9488, #0891b2);
-            color: white;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(20,184,166,0.35); }
-        .btn-primary:active { transform: translateY(0); }
-
-        /* Tombol hapus di footer */
-        .btn-danger {
-            padding: 0.6rem 1.1rem;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            border: 1px solid rgba(239,68,68,0.2);
-            background: rgba(239,68,68,0.08);
-            color: #fca5a5;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-danger:hover { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); }
-
-        /* Category pills */
+        /* ─── CATEGORY PILLS ─── */
         .category-pills {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            margin-top: 6px;
+            margin-top: 8px;
         }
 
         .pill {
-            padding: 0.25rem 0.75rem;
+            padding: 0.3rem 0.85rem;
             border-radius: 99px;
             font-size: 0.72rem;
-            font-weight: 500;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.09);
-            color: rgba(148,163,184,0.6);
+            font-weight: 600;
+            background: #f8f7ff;
+            border: 1.5px solid #e2e8f0;
+            color: #94a3b8;
             cursor: pointer;
             transition: all 0.15s ease;
             user-select: none;
         }
 
-        .pill:hover { background: rgba(20,184,166,0.1); border-color: rgba(20,184,166,0.2); color: #5eead4; }
-        .pill.selected { background: rgba(20,184,166,0.12); border-color: rgba(20,184,166,0.25); color: #5eead4; }
-
-        /* Changed indicator */
-        .changed-dot {
-            display: none;
-            width: 6px; height: 6px;
-            border-radius: 99px;
-            background: #fbbf24;
-            margin-left: 4px;
+        .pill:hover {
+            background: #f5f3ff;
+            border-color: #c4b5fd;
+            color: #7c3aed;
         }
 
-        .form-label.has-change .changed-dot { display: inline-block; }
+        .pill.selected {
+            background: #ede9fe;
+            border-color: #a78bfa;
+            color: #7c3aed;
+        }
 
-        .footer-actions {
+        /* ─── STOCK SLIDER VISUAL ─── */
+        .stock-track {
+            height: 6px;
+            background: #ede9fe;
+            border-radius: 99px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .stock-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #7c3aed, #a78bfa);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* ─── SIDE PANEL (right) ─── */
+        .side-panel {
+            padding: 2rem 1.75rem;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Preview card */
+        .preview-card {
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            min-height: 168px;
+        }
+
+        .preview-card::before {
+            content: '';
+            position: absolute;
+            top: -30px; right: -30px;
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .preview-card::after {
+            content: '';
+            position: absolute;
+            bottom: -20px; left: -20px;
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.04);
+        }
+
+        .preview-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.55);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.35rem;
+            min-height: 1.5rem;
+            word-break: break-word;
+        }
+
+        .preview-name.empty { color: rgba(255,255,255,0.3); font-weight: 400; font-size: 0.875rem; }
+
+        .preview-cat {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.15rem 0.6rem;
+            background: rgba(255,255,255,0.15);
+            border-radius: 99px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 1.25rem;
+        }
+
+        .preview-cat.empty { color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); }
+
+        .preview-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            position: relative;
+            z-index: 1;
+        }
+
+        .preview-price {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: white;
+        }
+
+        .preview-price.empty { color: rgba(255,255,255,0.3); font-size: 0.875rem; font-weight: 400; font-family: 'DM Sans', sans-serif; }
+
+        .preview-stock-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            background: rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.9);
+        }
+
+        .preview-stock-badge.empty { color: rgba(255,255,255,0.3); }
+
+        /* ─── EDIT BADGE on preview ─── */
+        .preview-edit-badge {
+            position: absolute;
+            top: 1rem; right: 1rem;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 8px;
+            padding: 0.2rem 0.55rem;
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.85);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 1;
+        }
+
+        .preview-edit-badge svg { width: 10px; height: 10px; }
+
+        /* ─── META INFO (created at, id) ─── */
+        .meta-panel {
+            border: 1.5px solid #ede9fe;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .meta-panel-head {
+            padding: 0.75rem 1rem;
+            background: #faf9ff;
+            border-bottom: 1px solid #ede9fe;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
+        .meta-panel-head span {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #1e1b4b;
+        }
+
+        .meta-panel-head svg {
+            width: 14px; height: 14px;
+            color: #a78bfa;
+            flex-shrink: 0;
+        }
+
+        .meta-panel-body {
+            padding: 0.85rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .meta-key {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .meta-val {
+            font-size: 0.72rem;
+            color: #475569;
+            font-weight: 600;
+            text-align: right;
+            max-width: 60%;
+            word-break: break-all;
+        }
+
+        /* Info panels */
+        .info-panel {
+            border: 1.5px solid #ede9fe;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .info-panel-head {
+            padding: 0.75rem 1rem;
+            background: #faf9ff;
+            border-bottom: 1px solid #ede9fe;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-panel-head span {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #1e1b4b;
+        }
+
+        .info-panel-head svg {
+            width: 14px; height: 14px;
+            color: #a78bfa;
+            flex-shrink: 0;
+        }
+
+        .info-panel-body {
+            padding: 0.85rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 0.775rem;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        .info-row svg {
+            width: 13px; height: 13px;
+            color: #a78bfa;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Stock indicator */
+        .stock-indicator {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .stock-indicator-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stock-label-text { font-size: 0.72rem; font-weight: 600; color: #475569; }
+        .stock-value-text { font-size: 0.72rem; font-weight: 700; color: #7c3aed; }
+
+        /* ─── DANGER ZONE ─── */
+        .danger-zone {
+            border: 1.5px solid #fecaca;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .danger-zone-head {
+            padding: 0.75rem 1rem;
+            background: #fff5f5;
+            border-bottom: 1px solid #fecaca;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .danger-zone-head span {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #dc2626;
+        }
+
+        .danger-zone-head svg {
+            width: 14px; height: 14px;
+            color: #ef4444;
+            flex-shrink: 0;
+        }
+
+        .danger-zone-body {
+            padding: 0.85rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .danger-zone-body p {
+            font-size: 0.75rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .btn-delete-full {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid #fca5a5;
+            background: #fff5f5;
+            color: #ef4444;
+            transition: all 0.2s ease;
+            width: 100%;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-delete-full:hover { background: #fee2e2; border-color: #f87171; color: #dc2626; }
+        .btn-delete-full svg { width: 14px; height: 14px; }
+
+        /* ─── ANIMATIONS ─── */
         .fade-up {
             opacity: 0;
-            transform: translateY(16px);
-            animation: fadeUp 0.5s ease forwards;
+            transform: translateY(12px);
+            animation: fadeUp 0.4s ease forwards;
         }
+
         @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-        .fade-up:nth-child(1) { animation-delay: 0.05s; }
-        .fade-up:nth-child(2) { animation-delay: 0.1s; }
-        .fade-up:nth-child(3) { animation-delay: 0.15s; }
+
+        .fade-up:nth-child(1) { animation-delay: 0.03s; }
+        .fade-up:nth-child(2) { animation-delay: 0.07s; }
+        .fade-up:nth-child(3) { animation-delay: 0.12s; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1100px) {
+            .content-area { grid-template-columns: 1fr; }
+            .side-panel { border-top: 1px solid #ede9fe; }
+        }
+
+        @media (max-width: 860px) {
+            .sidebar {
+                width: 68px;
+                padding: 1.25rem 0.5rem;
+                overflow: hidden;
+            }
+            .logo-label, .nav-item span, .nav-section-label, .logout-text { display: none; }
+            .sidebar-logo { justify-content: center; padding: 0.5rem 0; }
+            .nav-item { justify-content: center; padding: 0.65rem; }
+            .main { margin-left: 68px; }
+            .topbar { padding: 1.25rem 1.5rem; }
+            .form-panel { padding: 1.5rem; }
+        }
+
+        @media (max-width: 560px) {
+            .form-grid-2 { grid-template-columns: 1fr; }
+            .topbar-actions .btn-cancel,
+            .topbar-actions .btn-danger { display: none; }
+        }
     </style>
 </head>
 <body>
-    <div class="noise"></div>
 
-    <!-- Sidebar -->
+    <!-- ══════════════ SIDEBAR ══════════════ -->
     <aside class="sidebar">
         <div class="sidebar-logo">
             <div class="logo-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" style="width:18px;height:18px;color:white">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
                 </svg>
             </div>
-            <span class="font-display font-700 text-white text-base">MyApp</span>
+            <span class="logo-label">Stockify</span>
         </div>
 
         <span class="nav-section-label">Menu Utama</span>
@@ -413,273 +815,439 @@
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
-            Dashboard
+            <span>Dashboard</span>
         </a>
 
         <a href="{{ route('products.index') }}" class="nav-item active">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
-            Produk
+            <span>Produk</span>
         </a>
 
-        <form method="POST" action="{{ route('logout') }}" style="margin-top: auto;">
-            @csrf
-            <button type="submit" class="logout-btn">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-                Keluar
-            </button>
-        </form>
+        <span class="nav-section-label">Pengaturan</span>
+
+        <a href="#" class="nav-item">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>Pengaturan</span>
+        </a>
+
+        <div class="sidebar-bottom">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="logout-btn">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    <span class="logout-text">Keluar</span>
+                </button>
+            </form>
+        </div>
     </aside>
 
-    <!-- Main -->
+    <!-- ══════════════ MAIN ══════════════ -->
     <main class="main">
 
-        <!-- Topbar -->
+        <!-- Sticky Topbar -->
         <div class="topbar fade-up">
-            <div>
+            <div class="topbar-left">
                 <div class="breadcrumb">
                     <a href="{{ route('products.index') }}">Produk</a>
-                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                     <span>Edit</span>
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                    <span>{{ Str::limit($product->nama, 28) }}</span>
                 </div>
-                <h1 class="font-display text-xl font-700 text-white">Edit Produk</h1>
-                <p class="text-sm" style="color: rgba(148,163,184,0.6);">Perbarui informasi produk</p>
+                <h1>Edit Produk</h1>
             </div>
-            <span class="product-id-badge">
-                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14" />
-                </svg>
-                ID {{ $product->id }}
-            </span>
-        </div>
-
-        <!-- Form Card -->
-        <div class="form-card fade-up">
-            <div class="form-header">
-                <div class="form-header-left">
-                    <div class="form-header-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="#5eead4" stroke-width="1.8">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="font-display font-600 text-white text-sm">{{ $product->nama }}</h3>
-                        <p style="font-size: 0.72rem; color: rgba(100,116,139,0.6); margin-top: 1px;">Ubah field yang ingin diperbarui</p>
-                    </div>
-                </div>
-            </div>
-
-            <form method="POST" action="{{ route('products.update', $product->id) }}" id="editForm">
-                @csrf
-                @method('PUT')
-
-                <div class="form-body">
-
-                    <!-- Nama Produk -->
-                    <div class="form-group">
-                        <label class="form-label" for="nama" id="label-nama">
-                            Nama Produk <span>*</span>
-                            <span class="changed-dot"></span>
-                        </label>
-                        <input
-                            type="text"
-                            id="nama"
-                            name="nama"
-                            class="form-input {{ $errors->has('nama') ? 'is-error' : '' }}"
-                            placeholder="Nama produk"
-                            value="{{ old('nama', $product->nama) }}"
-                            data-original="{{ $product->nama }}"
-                            autofocus
-                        >
-                        @error('nama')
-                            <span class="form-error">
-                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                {{ $message }}
-                            </span>
-                        @enderror
-                    </div>
-
-                    <!-- Kategori -->
-                    <div class="form-group">
-                        <label class="form-label" for="kategori" id="label-kategori">
-                            Kategori <span>*</span>
-                            <span class="changed-dot"></span>
-                        </label>
-                        <input
-                            type="text"
-                            id="kategori"
-                            name="kategori"
-                            class="form-input {{ $errors->has('kategori') ? 'is-error' : '' }}"
-                            placeholder="Kategori produk"
-                            value="{{ old('kategori', $product->kategori) }}"
-                            data-original="{{ $product->kategori }}"
-                        >
-                        <div class="category-pills">
-                            @foreach (['Elektronik', 'Fashion', 'Makanan', 'Minuman', 'Olahraga', 'Furnitur', 'Kesehatan', 'Lainnya'] as $cat)
-                                <span
-                                    class="pill {{ old('kategori', $product->kategori) === $cat ? 'selected' : '' }}"
-                                    onclick="setKategori('{{ $cat }}')"
-                                >
-                                    {{ $cat }}
-                                </span>
-                            @endforeach
-                        </div>
-                        @error('kategori')
-                            <span class="form-error">
-                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                {{ $message }}
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="form-divider"></div>
-
-                    <!-- Harga & Stok -->
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label" for="harga" id="label-harga">
-                                Harga <span>*</span>
-                                <span class="changed-dot"></span>
-                            </label>
-                            <div class="input-wrapper">
-                                <span class="input-prefix">Rp</span>
-                                <input
-                                    type="number"
-                                    id="harga"
-                                    name="harga"
-                                    class="form-input has-prefix {{ $errors->has('harga') ? 'is-error' : '' }}"
-                                    placeholder="0"
-                                    value="{{ old('harga', $product->harga) }}"
-                                    data-original="{{ $product->harga }}"
-                                    min="0"
-                                    step="100"
-                                >
-                            </div>
-                            @error('harga')
-                                <span class="form-error">
-                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    {{ $message }}
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="stok" id="label-stok">
-                                Stok <span>*</span>
-                                <span class="changed-dot"></span>
-                            </label>
-                            <div class="input-wrapper">
-                                <input
-                                    type="number"
-                                    id="stok"
-                                    name="stok"
-                                    class="form-input has-suffix {{ $errors->has('stok') ? 'is-error' : '' }}"
-                                    placeholder="0"
-                                    value="{{ old('stok', $product->stok) }}"
-                                    data-original="{{ $product->stok }}"
-                                    min="0"
-                                >
-                                <span class="input-suffix">pcs</span>
-                            </div>
-                            @error('stok')
-                                <span class="form-error">
-                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    {{ $message }}
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-
-                </div>
-
-            </form>{{-- tutup form edit di sini --}}
-
-            {{-- Form hapus + tombol aksi, di luar form edit --}}
-            <form method="POST" action="{{ route('products.destroy', $product->id) }}" id="deleteForm" onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
-                @csrf
-                @method('DELETE')
-            </form>
-
-            <div class="form-footer">
-                {{-- Tombol hapus submit ke deleteForm --}}
-                <button type="submit" form="deleteForm" class="btn-danger">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <div class="topbar-actions">
+                <a href="{{ route('products.index') }}" class="btn-cancel">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Batal
+                </a>
+                {{-- Delete button (triggers hidden form) --}}
+                <button type="button" class="btn-danger" onclick="confirmDelete()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
                     Hapus
                 </button>
+                <button type="submit" form="product-form" class="btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Simpan Perubahan
+                </button>
+            </div>
+        </div>
 
-                {{-- Batal + Simpan --}}
-                <div class="footer-actions">
-                    <a href="{{ route('products.index') }}" class="btn-cancel">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        Batal
-                    </a>
-                    <button type="submit" form="editForm" class="btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                        Simpan Perubahan
-                    </button>
+        <!-- Hidden delete form -->
+        <form id="delete-form" method="POST" action="{{ route('products.destroy', $product) }}" style="display:none;">
+            @csrf
+            @method('DELETE')
+        </form>
+
+        <!-- Content: Form + Side Panel -->
+        <form id="product-form" method="POST" action="{{ route('products.update', $product) }}">
+            @csrf
+            @method('PUT')
+            <div class="content-area">
+
+                <!-- ─── FORM PANEL ─── -->
+                <div class="form-panel fade-up">
+
+                    <!-- Section: Info Dasar -->
+                    <div class="form-block">
+                        <p class="section-title">Info Dasar</p>
+
+                        <div class="form-group" style="margin-bottom: 1.25rem;">
+                            <label class="form-label" for="nama">
+                                Nama Produk <span class="req">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="nama"
+                                name="nama"
+                                class="form-input {{ $errors->has('nama') ? 'is-error' : '' }}"
+                                placeholder="Contoh: Sepatu Lari Pro X"
+                                value="{{ old('nama', $product->nama) }}"
+                                autofocus
+                                oninput="updatePreview()"
+                            >
+                            @error('nama')
+                                <span class="form-error">
+                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    {{ $message }}
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="kategori">
+                                Kategori <span class="req">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="kategori"
+                                name="kategori"
+                                class="form-input {{ $errors->has('kategori') ? 'is-error' : '' }}"
+                                placeholder="Pilih atau ketik kategori..."
+                                value="{{ old('kategori', $product->kategori) }}"
+                                oninput="syncPills(); updatePreview();"
+                            >
+                            <div class="category-pills">
+                                @foreach (['Elektronik', 'Fashion', 'Makanan', 'Minuman', 'Olahraga', 'Furnitur', 'Kesehatan', 'Lainnya'] as $cat)
+                                    <span class="pill {{ old('kategori', $product->kategori) === $cat ? 'selected' : '' }}"
+                                          onclick="setKategori('{{ $cat }}')">{{ $cat }}</span>
+                                @endforeach
+                            </div>
+                            @error('kategori')
+                                <span class="form-error">
+                                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    {{ $message }}
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Section: Harga & Stok -->
+                    <div class="form-block">
+                        <p class="section-title">Harga & Stok</p>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="harga">
+                                    Harga Jual <span class="req">*</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <span class="input-prefix">Rp</span>
+                                    <input
+                                        type="number"
+                                        id="harga"
+                                        name="harga"
+                                        class="form-input has-prefix {{ $errors->has('harga') ? 'is-error' : '' }}"
+                                        placeholder="0"
+                                        value="{{ old('harga', $product->harga) }}"
+                                        min="0"
+                                        step="100"
+                                        oninput="updatePreview()"
+                                    >
+                                </div>
+                                <span class="form-hint">Gunakan angka tanpa titik atau koma</span>
+                                @error('harga')
+                                    <span class="form-error">
+                                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        {{ $message }}
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="stok">
+                                    Jumlah Stok <span class="req">*</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input
+                                        type="number"
+                                        id="stok"
+                                        name="stok"
+                                        class="form-input has-suffix {{ $errors->has('stok') ? 'is-error' : '' }}"
+                                        placeholder="0"
+                                        value="{{ old('stok', $product->stok) }}"
+                                        min="0"
+                                        oninput="updatePreview(); updateStockBar();"
+                                    >
+                                    <span class="input-suffix">pcs</span>
+                                </div>
+                                <span class="form-hint">Stok ≤ 10 akan ditandai rendah</span>
+                                @error('stok')
+                                    <span class="form-error">
+                                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        {{ $message }}
+                                    </span>
+                                @enderror
+
+                                <!-- Stock bar -->
+                                <div class="stock-indicator" id="stockIndicator" style="display:none;">
+                                    <div class="stock-indicator-head">
+                                        <span class="stock-label-text">Level stok</span>
+                                        <span class="stock-value-text" id="stockLevelText">—</span>
+                                    </div>
+                                    <div class="stock-track">
+                                        <div class="stock-fill" id="stockFill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section: Deskripsi (opsional) -->
+                    <div class="form-block">
+                        <p class="section-title">Deskripsi <span style="font-weight:400;color:#c4b5fd;text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif;font-size:0.7rem;"> — opsional</span></p>
+                        <div class="form-group">
+                            <label class="form-label" for="deskripsi">Deskripsi Produk</label>
+                            <textarea
+                                id="deskripsi"
+                                name="deskripsi"
+                                class="form-textarea"
+                                placeholder="Tuliskan detail produk seperti bahan, ukuran, warna, dll..."
+                            >{{ old('deskripsi', $product->deskripsi) }}</textarea>
+                            <span class="form-hint">Deskripsi membantu pembeli memahami produkmu lebih baik</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ─── SIDE PANEL ─── -->
+                <div class="side-panel fade-up">
+
+                    <!-- Live Preview Card -->
+                    <div>
+                        <p style="font-size:0.7rem;font-weight:700;color:#c4b5fd;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.75rem;">Pratinjau Produk</p>
+                        <div class="preview-card">
+                            <span class="preview-edit-badge">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Sedang Diedit
+                            </span>
+                            <p class="preview-label">Edit Produk</p>
+                            <p class="preview-name {{ $product->nama ? '' : 'empty' }}" id="previewName">{{ $product->nama ?: 'Nama produk…' }}</p>
+                            <div>
+                                <span class="preview-cat {{ $product->kategori ? '' : 'empty' }}" id="previewCat">{{ $product->kategori ?: 'Tanpa kategori' }}</span>
+                            </div>
+                            <div class="preview-row">
+                                <span class="preview-price {{ $product->harga ? '' : 'empty' }}" id="previewPrice">
+                                    {{ $product->harga ? 'Rp ' . number_format($product->harga, 0, ',', '.') : 'Rp —' }}
+                                </span>
+                                <span class="preview-stock-badge {{ $product->stok ? '' : 'empty' }}" id="previewStock">
+                                    {{ $product->stok !== null ? $product->stok . ' pcs' : '0 pcs' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product metadata -->
+                    <div class="meta-panel">
+                        <div class="meta-panel-head">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <span>Info Produk</span>
+                        </div>
+                        <div class="meta-panel-body">
+                            <div class="meta-row">
+                                <span class="meta-key">ID Produk</span>
+                                <span class="meta-val">{{ $product->_id ?? $product->id }}</span>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-key">Dibuat</span>
+                                <span class="meta-val">
+                                    {{ optional($product->created_at)->translatedFormat('d M Y, H:i') ?? '—' }}
+                                </span>
+                            </div>
+                            <div class="meta-row">
+                                <span class="meta-key">Diperbarui</span>
+                                <span class="meta-val">
+                                    {{ optional($product->updated_at)->translatedFormat('d M Y, H:i') ?? '—' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tips panel -->
+                    <div class="info-panel">
+                        <div class="info-panel-head">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>Tips Pengisian</span>
+                        </div>
+                        <div class="info-panel-body">
+                            <div class="info-row">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                Gunakan nama produk yang spesifik agar mudah dicari.
+                            </div>
+                            <div class="info-row">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                Pilih kategori yang sesuai untuk mempermudah filter.
+                            </div>
+                            <div class="info-row">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                Harga diisi dalam rupiah tanpa titik, contoh: 150000.
+                            </div>
+                            <div class="info-row">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                Stok di bawah 10 akan tampil sebagai peringatan rendah.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Danger zone -->
+                    <div class="danger-zone">
+                        <div class="danger-zone-head">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <span>Zona Berbahaya</span>
+                        </div>
+                        <div class="danger-zone-body">
+                            <p>Menghapus produk bersifat permanen dan tidak dapat dibatalkan. Pastikan kamu yakin sebelum melanjutkan.</p>
+                            <button type="button" class="btn-delete-full" onclick="confirmDelete()">
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                                Hapus Produk Ini
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
-        </div>{{-- tutup .form-card --}}
+        </form>
 
     </main>
 
     <script>
-        // Category pill quick-pick
+        function formatRupiah(num) {
+            if (!num || isNaN(num)) return null;
+            return 'Rp ' + parseInt(num).toLocaleString('id-ID');
+        }
+
+        function updatePreview() {
+            const nama   = document.getElementById('nama').value.trim();
+            const kat    = document.getElementById('kategori').value.trim();
+            const harga  = document.getElementById('harga').value;
+            const stok   = document.getElementById('stok').value;
+
+            const pName  = document.getElementById('previewName');
+            const pCat   = document.getElementById('previewCat');
+            const pPrice = document.getElementById('previewPrice');
+            const pStock = document.getElementById('previewStock');
+
+            pName.textContent = nama || 'Nama produk…';
+            pName.className   = 'preview-name' + (nama ? '' : ' empty');
+
+            pCat.textContent  = kat || 'Tanpa kategori';
+            pCat.className    = 'preview-cat' + (kat ? '' : ' empty');
+
+            const priceFormatted = formatRupiah(harga);
+            pPrice.textContent   = priceFormatted || 'Rp —';
+            pPrice.className     = 'preview-price' + (priceFormatted ? '' : ' empty');
+
+            pStock.textContent   = stok ? stok + ' pcs' : '0 pcs';
+            pStock.className     = 'preview-stock-badge' + (stok ? '' : ' empty');
+        }
+
+        function updateStockBar() {
+            const stok = parseInt(document.getElementById('stok').value) || 0;
+            const ind  = document.getElementById('stockIndicator');
+            const fill = document.getElementById('stockFill');
+            const txt  = document.getElementById('stockLevelText');
+
+            if (stok > 0) {
+                ind.style.display = 'flex';
+                const pct = Math.min(stok, 100);
+                fill.style.width = pct + '%';
+                if (stok === 0)        { txt.textContent = 'Habis'; txt.style.color = '#dc2626'; fill.style.background = '#fca5a5'; }
+                else if (stok <= 10)   { txt.textContent = 'Rendah'; txt.style.color = '#ca8a04'; fill.style.background = 'linear-gradient(90deg,#f59e0b,#fbbf24)'; }
+                else                   { txt.textContent = 'Aman'; txt.style.color = '#16a34a'; fill.style.background = 'linear-gradient(90deg,#7c3aed,#a78bfa)'; }
+            } else {
+                ind.style.display = 'none';
+            }
+        }
+
         function setKategori(val) {
             const input = document.getElementById('kategori');
             input.value = val;
-            syncPills(val);
-            checkChanged(input);
+            syncPills();
+            updatePreview();
+            input.focus();
         }
 
-        function syncPills(val) {
+        function syncPills() {
+            const val = document.getElementById('kategori').value.trim();
             document.querySelectorAll('.pill').forEach(p => {
                 p.classList.toggle('selected', p.textContent.trim() === val);
             });
         }
 
-        // Detect changed fields → tampilkan dot kuning
-        function checkChanged(input) {
-            const original = input.dataset.original;
-            const label = document.getElementById('label-' + input.id);
-            if (!label) return;
-            if (String(input.value) !== String(original)) {
-                label.classList.add('has-change');
-            } else {
-                label.classList.remove('has-change');
+        function confirmDelete() {
+            const nama = document.getElementById('nama').value.trim() || 'produk ini';
+            if (confirm(`Hapus "${nama}"? Tindakan ini tidak bisa dibatalkan.`)) {
+                document.getElementById('delete-form').submit();
             }
         }
 
-        // Pasang event listener di semua input yang punya data-original
-        document.querySelectorAll('.form-input[data-original]').forEach(input => {
-            input.addEventListener('input', () => {
-                checkChanged(input);
-                if (input.id === 'kategori') syncPills(input.value.trim());
-            });
-        });
-
-        // Jalankan sekali saat load (jika ada old() dari validasi gagal)
-        document.querySelectorAll('.form-input[data-original]').forEach(checkChanged);
+        // Init on page load with existing product values
+        updatePreview();
+        updateStockBar();
+        syncPills();
     </script>
 </body>
 </html>

@@ -3,43 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produk</title>
+    <title>Produk — Stockify</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
-
-        * { font-family: 'DM Sans', sans-serif; box-sizing: border-box; }
-        h1, h2, h3, .font-display { font-family: 'Syne', sans-serif; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: #0a0a0f;
-            background-image:
-                radial-gradient(ellipse 70% 50% at 10% 0%, rgba(99, 58, 232, 0.2) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 40% at 90% 90%, rgba(20, 184, 166, 0.12) 0%, transparent 55%);
+            font-family: 'DM Sans', sans-serif;
+            background: #f8f7ff;
             min-height: 100vh;
-            color: #f1f5f9;
+            color: #1e1b4b;
+            display: flex;
         }
 
-        .noise {
-            position: fixed;
-            inset: 0;
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-        }
-
+        /* ─── SIDEBAR ─── */
         .sidebar {
-            width: 240px;
+            width: 252px;
             min-height: 100vh;
-            background: rgba(255, 255, 255, 0.03);
-            border-right: 1px solid rgba(255, 255, 255, 0.07);
+            background: #ffffff;
+            border-right: 1px solid #ede9fe;
             position: fixed;
             top: 0; left: 0;
             display: flex;
             flex-direction: column;
             padding: 1.5rem 1rem;
-            z-index: 10;
+            z-index: 20;
+            box-shadow: 4px 0 24px rgba(124, 58, 237, 0.05);
         }
 
         .sidebar-logo {
@@ -47,16 +37,36 @@
             align-items: center;
             gap: 10px;
             padding: 0.5rem 0.75rem;
-            margin-bottom: 2rem;
+            margin-bottom: 2.25rem;
         }
 
         .logo-icon {
             width: 36px; height: 36px;
             border-radius: 10px;
-            background: linear-gradient(135deg, #6d28d9, #4f46e5);
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 16px rgba(99, 58, 232, 0.4);
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
             flex-shrink: 0;
+        }
+
+        .logo-icon svg { width: 18px; height: 18px; color: white; }
+
+        .logo-label {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1e1b4b;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-section-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #c4b5fd;
+            padding: 0 0.75rem;
+            margin: 1rem 0 0.4rem;
+            font-weight: 600;
         }
 
         .nav-item {
@@ -66,23 +76,31 @@
             padding: 0.65rem 0.75rem;
             border-radius: 12px;
             font-size: 0.875rem;
-            color: rgba(148, 163, 184, 0.7);
+            font-weight: 500;
+            color: #94a3b8;
             text-decoration: none;
             transition: all 0.2s ease;
             margin-bottom: 2px;
         }
 
-        .nav-item:hover { background: rgba(255,255,255,0.06); color: #f1f5f9; }
-        .nav-item.active { background: rgba(99,58,232,0.15); color: #a78bfa; border: 1px solid rgba(99,58,232,0.2); }
         .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-        .nav-section-label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: rgba(100, 116, 139, 0.5);
-            padding: 0 0.75rem;
-            margin: 1rem 0 0.5rem;
+        .nav-item:hover {
+            background: #f5f3ff;
+            color: #7c3aed;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #ede9fe, #f5f3ff);
+            color: #7c3aed;
+            border: 1px solid #ddd6fe;
+            font-weight: 600;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid #f1f5f9;
         }
 
         .logout-btn {
@@ -92,26 +110,33 @@
             padding: 0.65rem 0.75rem;
             border-radius: 12px;
             font-size: 0.875rem;
-            color: rgba(248, 113, 113, 0.7);
+            font-weight: 500;
+            color: #f87171;
             text-decoration: none;
             transition: all 0.2s ease;
             width: 100%;
             background: none;
             border: none;
             cursor: pointer;
-            margin-top: auto;
+            font-family: 'DM Sans', sans-serif;
         }
 
-        .logout-btn:hover { background: rgba(239,68,68,0.08); color: #fca5a5; }
-        .logout-btn svg { width: 18px; height: 18px; }
+        .logout-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
 
+        .logout-btn:hover {
+            background: #fff5f5;
+            color: #ef4444;
+        }
+
+        /* ─── MAIN ─── */
         .main {
-            margin-left: 240px;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
+            margin-left: 252px;
+            padding: 2rem 2.5rem;
+            flex: 1;
+            min-height: 100vh;
         }
 
+        /* ─── TOPBAR ─── */
         .topbar {
             display: flex;
             align-items: center;
@@ -119,160 +144,276 @@
             margin-bottom: 2rem;
         }
 
+        .topbar-left h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1e1b4b;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+        }
+
+        .topbar-left p {
+            font-size: 0.825rem;
+            color: #a78bfa;
+            margin-top: 0.2rem;
+        }
+
         .btn-primary {
             padding: 0.6rem 1.25rem;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 500;
+            border-radius: 11px;
+            font-size: 0.825rem;
+            font-weight: 600;
             cursor: pointer;
             border: none;
-            background: linear-gradient(135deg, #6d28d9, #4f46e5);
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
             color: white;
             transition: all 0.2s ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            font-family: 'DM Sans', sans-serif;
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
         }
 
-        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(99,58,232,0.4); }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+        }
 
+        .btn-primary svg { width: 15px; height: 15px; }
+
+        /* ─── ALERT ─── */
+        .alert-success {
+            padding: 0.85rem 1.25rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #16a34a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .alert-success svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+        /* ─── TABLE CARD ─── */
         .table-card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 20px;
+            background: #ffffff;
+            border: 1.5px solid #ede9fe;
+            border-radius: 18px;
             overflow: hidden;
         }
 
-        .table-header {
+        .card-header {
             padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
+            border-bottom: 1px solid #f1f5f9;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 1rem;
         }
 
+        .card-header-left h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1e1b4b;
+        }
+
+        .card-header-left span {
+            font-size: 0.775rem;
+            color: #a78bfa;
+            font-weight: 400;
+            margin-left: 0.4rem;
+        }
+
+        .search-input {
+            background: #faf9ff;
+            border: 1.5px solid #ede9fe;
+            color: #1e1b4b;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-size: 0.825rem;
+            outline: none;
+            transition: all 0.2s ease;
+            width: 220px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .search-input:focus {
+            border-color: #c4b5fd;
+            background: #f5f3ff;
+        }
+
+        .search-input::placeholder { color: #c4b5fd; }
+
+        /* ─── TABLE ─── */
         table { width: 100%; border-collapse: collapse; }
+
         thead th {
-            padding: 0.75rem 1.5rem;
+            padding: 0.7rem 1.5rem;
             text-align: left;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            color: rgba(100,116,139,0.6);
-            background: rgba(0,0,0,0.2);
+            color: #c4b5fd;
+            background: #faf9ff;
+            font-weight: 600;
         }
 
-        tbody tr { border-top: 1px solid rgba(255,255,255,0.05); transition: background 0.15s ease; }
-        tbody tr:hover { background: rgba(255,255,255,0.03); }
-        tbody td { padding: 1rem 1.5rem; font-size: 0.875rem; color: rgba(203,213,225,0.8); }
+        tbody tr {
+            border-top: 1px solid #f8f7ff;
+            transition: background 0.15s ease;
+        }
 
+        tbody tr:hover { background: #faf9ff; }
+
+        tbody td {
+            padding: 0.95rem 1.5rem;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        tbody td.td-name {
+            color: #1e1b4b;
+            font-weight: 600;
+        }
+
+        tbody td.td-num {
+            color: #c4b5fd;
+            font-size: 0.8rem;
+        }
+
+        /* ─── BADGES ─── */
         .badge-kategori {
             display: inline-flex;
-            padding: 0.2rem 0.75rem;
+            padding: 0.2rem 0.65rem;
             border-radius: 99px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            background: rgba(99,58,232,0.12);
-            color: #a78bfa;
-            border: 1px solid rgba(99,58,232,0.2);
+            font-size: 0.68rem;
+            font-weight: 600;
+            background: #f5f3ff;
+            color: #7c3aed;
+            border: 1px solid #ddd6fe;
+        }
+
+        .stock-high  { color: #16a34a; font-weight: 600; }
+        .stock-low   { color: #ca8a04; font-weight: 600; }
+        .stock-empty { color: #dc2626; font-weight: 600; }
+
+        /* ─── ACTION BUTTONS ─── */
+        .action-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .btn-edit {
             padding: 0.3rem 0.75rem;
             border-radius: 8px;
             font-size: 0.75rem;
-            font-weight: 500;
+            font-weight: 600;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            background: rgba(20,184,166,0.12);
-            color: #5eead4;
-            border: 1px solid rgba(20,184,166,0.2);
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
             transition: all 0.15s ease;
+            font-family: 'DM Sans', sans-serif;
         }
 
-        .btn-edit:hover { background: rgba(20,184,166,0.2); }
+        .btn-edit:hover { background: #dcfce7; border-color: #86efac; }
+        .btn-edit svg { width: 13px; height: 13px; }
 
         .btn-delete {
             padding: 0.3rem 0.75rem;
             border-radius: 8px;
             font-size: 0.75rem;
-            font-weight: 500;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            background: rgba(239,68,68,0.12);
-            color: #fca5a5;
-            border: 1px solid rgba(239,68,68,0.2);
+            background: #fff5f5;
+            color: #dc2626;
+            border: 1px solid #fecaca;
             transition: all 0.15s ease;
             cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
         }
 
-        .btn-delete:hover { background: rgba(239,68,68,0.2); }
+        .btn-delete:hover { background: #fee2e2; border-color: #fca5a5; }
+        .btn-delete svg { width: 13px; height: 13px; }
 
-        .alert-success {
-            padding: 0.85rem 1.25rem;
-            border-radius: 12px;
-            font-size: 0.875rem;
-            margin-bottom: 1.5rem;
-            background: rgba(34,197,94,0.1);
-            border: 1px solid rgba(34,197,94,0.2);
-            color: #86efac;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
+        /* ─── EMPTY STATE ─── */
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
-            color: rgba(100,116,139,0.6);
+            color: #c4b5fd;
         }
 
+        .empty-state svg {
+            width: 48px; height: 48px;
+            margin: 0 auto 1rem;
+            color: #ddd6fe;
+        }
+
+        .empty-state p {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-bottom: 1.25rem;
+        }
+
+        /* ─── ANIMATIONS ─── */
         .fade-up {
             opacity: 0;
-            transform: translateY(16px);
-            animation: fadeUp 0.5s ease forwards;
+            transform: translateY(14px);
+            animation: fadeUp 0.45s ease forwards;
         }
+
         @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-        .fade-up:nth-child(1) { animation-delay: 0.05s; }
-        .fade-up:nth-child(2) { animation-delay: 0.1s; }
-        .fade-up:nth-child(3) { animation-delay: 0.15s; }
 
-        .search-input {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #f1f5f9;
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            outline: none;
-            transition: all 0.2s ease;
-            width: 220px;
+        .fade-up:nth-child(1) { animation-delay: 0.04s; }
+        .fade-up:nth-child(2) { animation-delay: 0.09s; }
+        .fade-up:nth-child(3) { animation-delay: 0.14s; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 860px) {
+            .sidebar {
+                width: 68px;
+                padding: 1.25rem 0.5rem;
+                overflow: hidden;
+            }
+            .logo-label, .nav-item span, .nav-section-label, .logout-text { display: none; }
+            .sidebar-logo { justify-content: center; padding: 0.5rem 0; }
+            .nav-item { justify-content: center; padding: 0.65rem; }
+            .main { margin-left: 68px; padding: 1.5rem 1.25rem; }
+            .topbar-left h1 { font-size: 1.25rem; }
+            .search-input { width: 160px; }
         }
 
-        .search-input:focus {
-            border-color: rgba(99,58,232,0.5);
-            background: rgba(99,58,232,0.08);
+        @media (max-width: 640px) {
+            .card-header { flex-direction: column; align-items: flex-start; }
+            .search-input { width: 100%; }
         }
-
-        .search-input::placeholder { color: rgba(100,116,139,0.5); }
     </style>
 </head>
 <body>
-    <div class="noise"></div>
 
-    <!-- Sidebar -->
+    <!-- ══════════════ SIDEBAR ══════════════ -->
     <aside class="sidebar">
         <div class="sidebar-logo">
             <div class="logo-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
                 </svg>
             </div>
-            <span class="font-display font-700 text-white text-base">MyApp</span>
+            <span class="logo-label">Stockify</span>
         </div>
 
         <span class="nav-section-label">Menu Utama</span>
@@ -281,38 +422,50 @@
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
-            Dashboard
+            <span>Dashboard</span>
         </a>
 
         <a href="{{ route('products.index') }}" class="nav-item active">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
-            Produk
+            <span>Produk</span>
         </a>
 
-        <form method="POST" action="{{ route('logout') }}" style="margin-top: auto;">
-            @csrf
-            <button type="submit" class="logout-btn">
-                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-                Keluar
-            </button>
-        </form>
+        <span class="nav-section-label">Pengaturan</span>
+
+        <a href="#" class="nav-item">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>Pengaturan</span>
+        </a>
+
+        <div class="sidebar-bottom">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="logout-btn">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    <span class="logout-text">Keluar</span>
+                </button>
+            </form>
+        </div>
     </aside>
 
-    <!-- Main -->
+    <!-- ══════════════ MAIN ══════════════ -->
     <main class="main">
 
         <!-- Topbar -->
         <div class="topbar fade-up">
-            <div>
-                <h1 class="font-display text-xl font-700 text-white">Produk</h1>
-                <p class="text-sm" style="color: rgba(148,163,184,0.6);">Kelola data produk kamu</p>
+            <div class="topbar-left">
+                <h1>Produk</h1>
+                <p>Kelola semua data produk kamu</p>
             </div>
             <a href="{{ route('products.create') }}" class="btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
                 </svg>
                 Tambah Produk
@@ -322,23 +475,28 @@
         <!-- Alert Success -->
         @if (session('success'))
             <div class="alert-success fade-up">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
                 {{ session('success') }}
             </div>
         @endif
 
-        <!-- Table -->
+        <!-- Table Card -->
         <div class="table-card fade-up">
-            <div class="table-header">
-                <h3 class="font-display font-600 text-white text-base">
-                    Daftar Produk
-                    <span class="text-sm font-400 ml-2" style="color: rgba(148,163,184,0.5);">
-                        ({{ $products->count() }} produk)
-                    </span>
-                </h3>
-                <input type="text" class="search-input" placeholder="🔍 Cari produk..." onkeyup="searchTable(this.value)">
+            <div class="card-header">
+                <div class="card-header-left">
+                    <h3>
+                        Daftar Produk
+                        <span>({{ $products->count() }} produk)</span>
+                    </h3>
+                </div>
+                <input
+                    type="text"
+                    class="search-input"
+                    placeholder="🔍  Cari produk..."
+                    onkeyup="searchTable(this.value)"
+                >
             </div>
 
             <table id="productTable">
@@ -355,33 +513,33 @@
                 <tbody>
                     @forelse ($products as $index => $product)
                         <tr>
-                            <td style="color: rgba(100,116,139,0.6);">{{ $index + 1 }}</td>
-                            <td class="text-white font-500">{{ $product->nama }}</td>
+                            <td class="td-num">{{ $index + 1 }}</td>
+                            <td class="td-name">{{ $product->nama }}</td>
                             <td><span class="badge-kategori">{{ $product->kategori }}</span></td>
                             <td>Rp {{ number_format($product->harga, 0, ',', '.') }}</td>
                             <td>
-                                <span style="color: {{ $product->stok > 10 ? '#86efac' : ($product->stok > 0 ? '#fde047' : '#fca5a5') }}">
-                                    {{ $product->stok }} pcs
-                                </span>
+                                @if ($product->stok > 10)
+                                    <span class="stock-high">{{ $product->stok }} pcs</span>
+                                @elseif ($product->stok > 0)
+                                    <span class="stock-low">{{ $product->stok }} pcs</span>
+                                @else
+                                    <span class="stock-empty">Habis</span>
+                                @endif
                             </td>
                             <td>
-                                <div class="flex items-center gap-2">
+                                <div class="action-wrap">
                                     <a href="{{ route('products.edit', $product->id) }}" class="btn-edit">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                         </svg>
                                         Edit
                                     </a>
-                                    <form method="POST" action="{{ route('products.destroy', $product->id) }}" onsubmit="return confirm('Yakin hapus produk ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-delete">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                            Hapus
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn-delete" data-action="{{ route('products.destroy', $product->id) }}" data-name="{{ $product->nama }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                        Hapus
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -389,11 +547,15 @@
                         <tr>
                             <td colspan="6">
                                 <div class="empty-state">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto mb-3 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                                     </svg>
-                                    <p class="text-sm">Belum ada produk. Tambahkan produk pertama kamu!</p>
-                                    <a href="{{ route('products.create') }}" class="btn-primary mt-4 inline-flex">+ Tambah Produk</a>
+                                    <p>Belum ada produk. Tambahkan produk pertama kamu!</p>
+                                    <a href="{{ route('products.create') }}" class="btn-primary" style="display: inline-flex;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="width:15px;height:15px;">
+                                        </svg>
+                                       + Tambah Produk
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -412,6 +574,16 @@
                 row.style.display = text.includes(value.toLowerCase()) ? '' : 'none';
             });
         }
+
+        // Delete button handler
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                const name = this.getAttribute('data-name');
+                openDeleteModal(action, name);
+            });
+        });
     </script>
+    @include('products._delete')
 </body>
 </html>
